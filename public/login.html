@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Google login</title>
+</head>
+<style type="text/css">
+    #mydiv {
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30em;
+        height: 18em;
+        margin-top: -9em;
+        /*set to a negative number 1/2 of your height*/
+        margin-left: -15em;
+        /*set to a negative number 1/2 of your width*/
+        border: 1px solid #ccc;
+    }
+</style>
+
+<body>
+    <div id="mydiv">
+        <button style="margin-top:20%" onclick="fetchGooleResourse()" class="btn btn-primary">Get My Meetings</button>
+    </div>
+
+
+    </script>
+    <script>
+        async function fetchGooleResourse() {
+            const client_id = "248888089482-cng0vrhuk210iri4rnte6tkmt7vr00tg.apps.googleusercontent.com"
+            const redirect_uri = "http://localhost:5000/cb"
+            const nounce = "hdfghknlndhnm"
+            const scope = "openid profile email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar"
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&access_type=offline`
+            window.location.href = url;
+        }
+    </script>
+</body>
+
+</html>
