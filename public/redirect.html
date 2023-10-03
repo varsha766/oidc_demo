@@ -28,8 +28,10 @@
         }
 
         async function getMeeting() {
+            console.log("getmeeting")
             const code = getQueryParam('code');
             let result = await fetchToken(code)
+            console.log(result, "result")
             const meetingUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList"
             const meetingList = await fetch(meetingUrl, {
                 method: "Get",
