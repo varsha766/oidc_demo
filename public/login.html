@@ -37,12 +37,10 @@
     </script>
     <script>
         async function fetchGooleResourse() {
-            const client_id = "248888089482-cng0vrhuk210iri4rnte6tkmt7vr00tg.apps.googleusercontent.com"
-            const redirect_uri = "http://localhost:5000/cb"
-            const nounce = "hdfghknlndhnm"
-            const scope = "openid profile email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar"
-            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&access_type=offline`
-            window.location.href = url;
+           const data= await fetch('http://localhost:5000/authorizationUrl')
+           const resp= await data.json()
+           window.location.href = resp;
+
         }
     </script>
 </body>

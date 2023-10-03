@@ -34,23 +34,41 @@ async function fetchAuthUrlData() {
             code_challenge,
             code_challenge_method: 'S256',
         })
-        console.log(authorizationUrl)
+        return authorizationUrl
     } catch (e) {
         console.log(e)
     }
 
 }
 fetchAuthUrlData()
+app.get('/', function (req, res) {
+    try {
+        res.sendFile("./public/login.html", { root: __dirname })
+
+    } catch (e) {
+        res.send(`Error: ${e}`)
+    }
+})
+app.get('/authorizationUrl', async (req, res) => {
+    try {
+        console.log('authorizationUrl api')
+        const authorizationUrl = await fetchAuthUrlData()
+        res.json(authorizationUrl)
+    } catch (e) {
+        res.send(`Error:${e.message}`)
+    }
+})
 app.get('/cb', async function (req, res) {
     try {
         const params = client.callbackParams(req)
         const tokenSet = await client.callback('http://localhost:5000/cb', params, { code_verifier })
-        console.log(tokenSet.TokenSet, "received tokenSet")
+        console.log(tokenSet, "received tokenSet")
         const accessToken = tokenSet.access_token
         const userinfo = await client.userinfo(accessToken)
         console.log(userinfo)
         const clanderList = await client.requestResource("https://www.googleapis.com/calendar/v3/users/me/calendarList", accessToken)
-        console.log(clanderList)
+        // console.log(clanderList)
+        res.send('Got the user meeting list')
     } catch (e) {
         res.send(`Error: ${e}`)
     }
