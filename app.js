@@ -24,7 +24,6 @@ app.get('/', function (req, res) {
 })
 app.get('/cb', async function (req, res) {
     try {
-
         res.sendFile("./public/redirect.html", { root: __dirname })
 
     } catch (e) {
@@ -41,7 +40,7 @@ app.get('/accessToken', async function (req, res) {
             code,
             client_id: process.env.CLIENTID,
             client_secret: process.env.CLIENT_SECRET,
-            redirect_uri: "http://localhost:5000/redirect.html",
+            redirect_uri: "http://localhost:5001/redirect.html",
             grant_type: "authorization_code"
         }
         const url = "https://oauth2.googleapis.com/token"
@@ -53,7 +52,7 @@ app.get('/accessToken', async function (req, res) {
             }
         })
         const resp = await response.json()
-        res.json(resp)
+        res.json(resp.access_token)
     } catch (e) {
         console.log(e)
         res.send(`Error: ${e}`)

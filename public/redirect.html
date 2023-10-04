@@ -20,36 +20,17 @@
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
-        async function fetchToken(code) {
-            const url = `http://localhost:5000/accessToken?code=${code}`
+          
+        async function fetchToken() {
+            const code = getQueryParam('code');
+            const url = `http://localhost:5001/accessToken?code=${code}`
             const result = await fetch(url)
             const response = await result.json()
+            window.location.href = `home.html?accessToken=${response}`
             return response
         }
+    fetchToken()
 
-        async function getMeeting() {
-            console.log("getmeeting")
-            const code = getQueryParam('code');
-            let result = await fetchToken(code)
-            console.log(result, "result")
-            const meetingUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList"
-            const meetingList = await fetch(meetingUrl, {
-                method: "Get",
-                headers: {
-                    "Authorization": `Bearer ${result.access_token}`
-                }
-            })
-            const data = await meetingList.json()
-            return data
-        }
-        const responseData = document.getElementById("MeetingList")
-        const response = getMeeting().then((response) => {
-            responseData.textContent = JSON.stringify(response.items, null, 2);
-        })
-            .catch((error) => {
-                // Handle any errors
-                console.error(error);
-            });
     </script>
 </body>
 

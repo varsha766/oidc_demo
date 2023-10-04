@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title> home</title>
+</head>
+
+<body>
+    <div id="MeetingList"></div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const accesstoken = urlParams.get('accessToken')
+        async function getMeeting() {
+            const meetingUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList"
+            const meetingList = await fetch(meetingUrl, {
+                method: "Get",
+                headers: {
+                    "Authorization": `Bearer ${accesstoken}`
+                }
+            })
+            const data = await meetingList.json()
+            return data
+        }
+        const responseData = document.getElementById("MeetingList")
+        const response = getMeeting().then((response) => {
+            responseData.textContent = JSON.stringify(response.items, null, 2);
+        })
+            .catch((error) => {
+                // Handle any errors
+                console.error(error);
+            });
+    </script>
+</body>
+
+</html>
