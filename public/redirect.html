@@ -21,7 +21,7 @@
             return urlParams.get(name);
         }
         async function fetchToken(code) {
-            const url = `http://localhost:5000/accessToken?code=${code}`
+            const url = `http://localhost:5001/accessToken?code=${code}`
             const result = await fetch(url)
             const response = await result.json()
             return response
