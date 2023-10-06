@@ -21,7 +21,7 @@ const googleIssuers = await Issuer.discover('https://accounts.google.com')
 const client = new googleIssuers.Client({
     client_id: process.env.CLIENTID,
     client_secret: process.env.CLIENT_SECRET,
-    redirect_uris: ["http://localhost:5000/cb"],
+    redirect_uris: ["http://localhost:5001/cb"],
     response_types: ['code']
 })
 const code_verifier = generators.codeVerifier()
@@ -58,10 +58,12 @@ app.get('/authorizationUrl', async (req, res) => {
         res.send(`Error:${e.message}`)
     }
 })
+
+// calback and redirect uri should be same
 app.get('/cb', async function (req, res) {
     try {
         const params = client.callbackParams(req)
-        const tokenSet = await client.callback('http://localhost:5000/cb', params, { code_verifier })
+        const tokenSet = await client.callback('http://localhost:5001/cb', params, { code_verifier })
         console.log(tokenSet, "received tokenSet")
         const accessToken = tokenSet.access_token
         const userinfo = await client.userinfo(accessToken)

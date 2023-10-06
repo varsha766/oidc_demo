@@ -37,7 +37,7 @@
     </script>
     <script>
         async function fetchGooleResourse() {
-           const data= await fetch('http://localhost:5000/authorizationUrl')
+           const data= await fetch('http://localhost:5001/authorizationUrl')
            const resp= await data.json()
            window.location.href = resp;
 
