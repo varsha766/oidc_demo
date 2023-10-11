@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="login-card">
+        <h1>{{TITLE}}</h1>
+        <form autocomplete="off" action="{{AUTH_SERVER_URL}}/token" method="post">
+            <label>Client Id</label>
+            <input required name="client_id" value="clientId" /><br>
+            <label>Client Secret</label>
+            <input required name="client_secret" value="client secret" /><br>
+            <label>Grant Type</label>
+            <input required name="grant_type" value="authorization_code" /><br>
+            <label>Code</label>
+            <input required name="code" value="{{CODE}}" /><br>
+            <label>Redirect URI</label>
+            <input required name="redirect_uri" value="http://localhost:5001/cb" /><br>
+            <label>Scope</label>
+            <input required name="scope" value="openid offline_access" /><br>
+            <label>Code Verifier</label>
+            <input required name="code_verifier" value="{{codeVerifier}}" /><br>
+            <label>Code Challenge Method</label>
+            <input required name="code_challenge_method" value="S256" /><br>
+
+            <button type="submit" class="login login-submit">Issue Token</button>
+        </form>
+    </div>
+</body>
+
+</html>

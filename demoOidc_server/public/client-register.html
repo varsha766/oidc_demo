@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RegistrationForm</title>
+</head>
+<body>
+    <h1>Client registration</h1>
+    <form id="postForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="redirect_uris">Redirect URIs (comma-separated):</label>
+        <input type="text" id="redirect_uris" name="redirect_uris"><br>
+        <label for="grant_types">Grant types (comma-separated):</label>
+        <input type="text" id="grant_types" name="grant_types" required><br>
+        <label for="scope">Scope (comma-separated):</label>
+        <input type="text" id="scope" name="scope" required><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById("postForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Get form values
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var redirectUris = document.getElementById("redirect_uris").value;
+            var grantTypes = document.getElementById("grant_types").value;
+            var scopes = document.getElementById("scope").value;
+
+            // Create data object
+            var data = {
+                name: name,
+                email: email,
+                password: password,
+                redirect_uris: redirectUris.split(',').map(function (uri) {
+                    return uri.trim();
+                }),
+                grant_types: grantTypes.split(',').map(function (uri) {
+                    return uri.trim();
+                }),
+                scope: scopes
+            };
+            // Send POST request
+            fetch("http://localhost:3009/api/client-register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        console.log('ok')
+
+                        return response.json()
+                        //   alert("POST request sent successfully");
+                    } else {
+                        alert("Error sending POST request");
+                    }
+                })
+                .then(function (data) {
+                    console.log('data')
+                    var alertText = `clientId:${data.clientId}\n clientSecret:${data.clientSecret}\n ID: ${data.id}`
+                    alert(alertText)
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+</body>
+
+</html>

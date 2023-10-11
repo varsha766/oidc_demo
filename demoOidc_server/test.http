@@ -1,0 +1,4 @@
+GET http://localhost:3009/auth?client_id=oidcCLIENT&redirect_uri=http://localhost:5001/redirect.html&response_type=code&scope=openid&access_type=offline
+
+### fetch resource
+GET http://localhost:3006/pi

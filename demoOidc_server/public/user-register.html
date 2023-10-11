@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RegistrationForm</title>
+</head>
+
+<body>
+    <h1>Client registration</h1>
+    <form id="postForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById("postForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Get form values
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+
+            // Create data object
+            var data = {
+                name: name,
+                password: password,
+            };
+            // Send POST request
+            fetch("http://localhost:3009/api/user-register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        alert("user registerd successfully");
+
+                        //return response.json()
+                    } else {
+                        alert("Error sending POST request");
+                    }
+                })
+
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+</body>
+
+</html>

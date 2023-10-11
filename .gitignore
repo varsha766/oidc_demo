@@ -1,3 +1,11 @@
-.env
-node_modules
-package-lock.json
+/demoOidc_server/.env
+/demoOidc_server/node_modules
+/demoOidc_server/package-lock.json
+
+/oidc_client/.env
+/oidc_client/node_modules
+/oidc_client/package-lock.json
+
+/resource_server/.env
+/resource_server/node_modules
+/resource_server/package-lock.json
