@@ -19,6 +19,13 @@ v18.17.1
     npm install
     npm run start:oidc
     ```
+ - developerConsole
+   Create a clientId and clientSecret using developer console
+   ```
+   cd developerConsole
+   npm install
+   npm run start
+   ```
 - oidc_client
    ```
    cd oidc_client
