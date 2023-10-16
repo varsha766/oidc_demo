@@ -1,16 +1,15 @@
-import Account from '../db/model/users.js'
-
+import Clients from '../db/model/client.js'
 const get = async (key) => {
-    const details = await Account.findOne({ username: key })
+    const details = await Clients.findOne({ username: key })
     return details
 }
 const set = async (value) => {
-    const newAccount = new Account(value)
-    return await newAccount.save()
+    const newClient = new Clients(value)
+    return await newClient.save()
 }
 const getAll = async () => {
     try {
-        const detail = await Account.find({}).lean()
+        const detail = await Clients.find({}).lean()
         return detail
     } catch (e) {
         console.log(e)

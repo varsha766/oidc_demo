@@ -2,7 +2,6 @@ import fetch from 'node-fetch'
 import env from 'dotenv'
 env.config()
 export const authenticate = async (req, res, next) => {
-    console.log('entered in authenticate')
     const body = new URLSearchParams()
     if (!req.headers.authorization) return res.status(401).send('Unauthorized');
     body.append('token', req.headers.authorization.replace(/^Bearer /, ''));
@@ -17,7 +16,6 @@ export const authenticate = async (req, res, next) => {
         })
         const json = await response.json()
         console.log(json, "json")
-        console.log(req.originalUrl, "req.originalurl")
         const { active, aud } = json
         // need to check why not able to get aud in json
         // if (active && aud.trim() === req.originalUrl.split('?')[0]) {
@@ -36,13 +34,9 @@ export const authorize = (...scopes) => {
     console.log('entered in authorize')
 
     return async (req, res, next) => {
-        console.log(req.session)
-
         if (req.session && scopes.every((scope) => req.session.scope.includes(scope))) {
-            console.log('if')
             return next()
         } else {
-            console.log('else')
             res.status(401).send('Unauthorized')
         }
     }

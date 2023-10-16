@@ -1,27 +1,28 @@
 {
-  "name": "demooidc_server",
+  "name": "developerconsole",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:oidc": "nodemon index.js",
-    "bootstrap:client": "node services/bootstrap.js"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "env": "^0.0.2",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "exxpress": "^1.0.0",
+    "fetch": "^1.1.0",
     "fs": "^0.0.1-security",
-    "mongoose": "^7.6.0",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.0.1",
-    "oidc-provider": "^8.4.0",
+    "oidc-client": "^1.11.5",
     "openid-client": "^5.6.1",
     "path": "^0.12.7"
   }

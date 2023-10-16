@@ -9,3 +9,7 @@
 /resource_server/.env
 /resource_server/node_modules
 /resource_server/package-lock.json
+
+/developerConsole/.env
+/developerConsole/node_modules
+/developerConsole/package-lock.json

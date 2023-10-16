@@ -1,12 +1,36 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>RegistrationForm</title>
+    <title>Console</title>
 </head>
+
 <body>
-    <h1>Client registration</h1>
+    <script>
+        let developerToken
+        async function checkSession() {
+            const response = await fetch('http://localhost:3010/check-session')
+            developerToken = await response.json()
+            if (!developerToken.authToken) {
+                fetchAuthUrl(developerToken)
+
+            } else {
+                localStorage.setItem('authToken', developerToken.authToken)
+            }
+        }
+        async function fetchAuthUrl() {
+            const response = await fetch('http://localhost:3010/authorizationUrl')
+            const data = await response.json()
+            window.location.href = data.authorizationUrl;
+        }
+        async function init() {
+            await checkSession();
+        }
+        init();
+    </script>
+
+
+    <h1>OIDC-PROVIDER Console</h1>
     <form id="postForm">
         <label for="userId">userId</label>
         <input type="text" id="userId" name="userId" required><br>
@@ -51,11 +75,13 @@
                 }),
                 scope: scopes
             };
+            const token = localStorage.getItem('authToken')
             // Send POST request
             fetch("http://localhost:3009/api/client-register", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "authorizationToken": token
                 },
                 body: JSON.stringify(data)
             })

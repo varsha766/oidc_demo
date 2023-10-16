@@ -53,7 +53,6 @@ app.get('/', function (req, res) {
 })
 app.get('/authorizationUrl', async (req, res) => {
     try {
-        console.log('authorizationUrl api')
         const authorizationUrl = await fetchAuthUrlData()
         res.json(authorizationUrl)
     } catch (e) {
@@ -86,7 +85,6 @@ app.get('/cb', async function (req, res) {
         const resp = await token.json()
         const accessToken = resp.access_token
         const userinfo = await client.userinfo(accessToken)
-        console.log(userinfo)
         res.json(resp)
     } catch (e) {
         res.send(`Error: ${e}`)

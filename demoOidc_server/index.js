@@ -3,9 +3,8 @@ import oidc from 'oidc-provider'
 import cors from 'cors'
 import { Router, urlencoded } from 'express'
 import { strict as assert } from 'node:assert';
-import * as querystring from 'node:querystring';
+import clientService from './services/client.service.js'
 import accountService from './services/account.service.js'
-import userService from './services/user.service.js'
 import configuration from './configuration.js'
 import { errors } from 'oidc-provider';
 import connectMongoDb from './db/connection.js'
@@ -16,12 +15,11 @@ import { generateRandomString } from './services/strignGenerator.js';
 env.config()
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const app = express();
-
 const startServer = async () => {
     try {
         await connectMongoDb();
         console.log('db connected successfully')
-        const clientInfo = await accountService.getAll()
+        const clientInfo = await clientService.getAll()
         const body = urlencoded({ extended: false });
         const { SessionNotFound } = errors;
         app.use(express.static(path.join(__dirname, "public")));
@@ -40,18 +38,23 @@ const startServer = async () => {
         })
         app.post('/api/client-register', async (req, res, next) => {
             try {
-                const { name, email, password, redirect_uris, grant_types, scope } = req.body
-                if (!name || !email || !password || !redirect_uris) {
+                const authToken = req.headers.authorizationtoken
+                if (!authToken) {
+                    throw new Error('You are not authorized.')
+                }
+                const { userId, appName, appLogoUrl, redirect_uris, grant_types, scope } = req.body
+                if (!appName || !userId || !appLogoUrl || !redirect_uris) {
                     throw new Error('All the fields are required')
                 }
                 const clientId = generateRandomString(8)
                 const clientSecret = generateRandomString(32)
-                const userInfo = await accountService.set({
-                    username: name, password, email, redirect_uris, client_id: clientId, client_secret: clientSecret, emailVerified: true, grant_types, scope
+                const userInfo = await clientService.set({
+                    userId, appName, appLogoUrl, redirect_uris, client_id: clientId, client_secret: clientSecret, grant_types, scope
                 })
-                res.json({ id: userInfo._id, clientId, clientSecret, name })
+                res.json({ id: userInfo._id, clientId, clientSecret })
             } catch (e) {
                 console.log(e)
+                res.json({ message: e.message })
             }
         })
         app.get('/user-register', async (req, res, next) => {
@@ -67,10 +70,10 @@ const startServer = async () => {
                 if (!name || !password) {
                     throw new Error('All the fields are required')
                 }
-                const userInfo = await userService.set({
+                const userInfo = await accountService.set({
                     username: name, password
                 })
-                res.json({ message: 'user registerd successfully' })
+                res.json({ userId: userInfo._id })
             } catch (e) {
                 console.log(e)
             }
@@ -83,7 +86,6 @@ const startServer = async () => {
                 const client = await provider.Client.find(params.client_id);
                 switch (prompt.name) {
                     case 'login': {
-
                         let modifiedHtml
                         const htmlFilePath = path.join(__dirname, "public", 'login.html')
                         fs.readFile(htmlFilePath, 'utf8', (err, data) => {
@@ -127,7 +129,7 @@ const startServer = async () => {
                 const { prompt: { name } } = await provider.interactionDetails(req, res);
                 assert.equal(name, 'login');
                 let result;
-                const account = await userService.get(req.body.username);
+                const account = await accountService.get(req.body.username);
                 if (account?.password === req.body.password) {
                     result = {
                         login: {
@@ -229,5 +231,3 @@ function setNoCache(req, res, next) {
     next();
 }
 
-
-//http://localhost:3009/.well-known/openid-configuration
