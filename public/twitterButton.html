@@ -1,0 +1,125 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Authorization</title>
+</head>
+
+<body>
+
+    <button id="twitter-auth-button">Authorize with Twitter</button>
+
+    <script>
+        document.getElementById('twitter-auth-button').addEventListener('click', function () {
+            // Open a new window with the Twitter authorization URL
+            var twitterAuthUrl = 'https://api.twitter.com/oauth/authenticate?oauth_token=YOUR_OAUTH_TOKEN';
+            var authWindow = window.open(twitterAuthUrl, '_blank', 'width=600,height=400');
+
+            // Check for changes in the new window's URL
+            var checkWindow = setInterval(function () {
+                try {
+                    // Check if the URL contains the authorization code
+                    if (authWindow.location.href.indexOf('oauth_verifier') !== -1) {
+                        clearInterval(checkWindow);
+
+                        // Extract the authorization code from the URL
+                        var urlParams = new URLSearchParams(authWindow.location.search);
+                        var oauthVerifier = urlParams.get('oauth_verifier');
+
+                        // Close the authorization window
+                        authWindow.close();
+
+                        // Handle the obtained OAuth verifier (send it to your backend for further processing)
+                        console.log('OAuth Verifier:', oauthVerifier);
+                    }
+                } catch (error) {
+                    // Ignore errors due to cross-origin restrictions
+                }
+            }, 1000);
+        });
+    </script>
+
+</body>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter OAuth</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+</head>
+
+<body>
+
+    <button id="twitter-auth-button">Authorize with Twitter</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha1/0.6.0/sha1.min.js"></script>
+    <script>
+        document.getElementById('twitter-auth-button').addEventListener('click', function () {
+            // Replace with your Twitter API key and callback URL
+            var apiKey = 'NyjbZn2ssQR3bjy9IqR9KUbMj';
+            var callbackUrl = 'http://localhost:3002/api/v1/login/callback';
+
+            // Generate a unique timestamp for the request
+            var timestamp = Math.floor(Date.now() / 1000);
+
+            // Generate a unique nonce for the request
+            var nonce = btoa(String(timestamp));
+
+            // Construct the OAuth signature base string
+            var signatureBaseString = 'POST&' + encodeURIComponent('https://api.twitter.com/oauth/request_token') +
+                '&' + encodeURIComponent('oauth_callback=' + callbackUrl) +
+                '&' + encodeURIComponent('oauth_consumer_key=' + apiKey) +
+                '&' + encodeURIComponent('oauth_nonce=' + nonce) +
+                '&' + encodeURIComponent('oauth_signature_method=HMAC-SHA1') +
+                '&' + encodeURIComponent('oauth_timestamp=' + timestamp) +
+                '&' + encodeURIComponent('oauth_version=1.0');
+
+            // Replace with your Twitter API secret key
+            var apiSecretKey = '';
+
+            // Generate the OAuth signature using HMAC-SHA1
+            var oauthSignature = btoa(CryptoJS.HmacSHA1(signatureBaseString, encodeURIComponent(apiSecretKey) + '&'));
+
+            // Construct the authorization header
+            var authorizationHeader = 'OAuth ' +
+                'oauth_callback="' + encodeURIComponent(callbackUrl) + '",' +
+                'oauth_consumer_key="' + apiKey + '",' +
+                'oauth_nonce="' + nonce + '",' +
+                'oauth_signature="' + encodeURIComponent(oauthSignature) + '",' +
+                'oauth_signature_method="HMAC-SHA1",' +
+                'oauth_timestamp="' + timestamp + '",' +
+                'oauth_version="1.0"';
+
+            // Make a POST request to the Twitter API to get the request token
+            fetch('https://api.twitter.com/oauth/request_token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': authorizationHeader,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // Parse the response data to extract the oauth_token and oauth_token_secret
+                    var responseParams = new URLSearchParams(data);
+                    var oauthToken = responseParams.get('oauth_token');
+
+                    // Redirect the user to Twitter for authorization
+                    window.location.href = 'https://api.twitter.com/oauth/authenticate?oauth_token=' + oauthToken;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+
+</html>

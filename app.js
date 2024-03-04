@@ -18,6 +18,7 @@ app.use(cors())
 // creating google issuer and client
 
 const googleIssuers = await Issuer.discover('https://accounts.google.com')
+// console.log(googleIssuers)
 const client = new googleIssuers.Client({
     client_id: process.env.CLIENTID,
     client_secret: process.env.CLIENT_SECRET,
@@ -43,7 +44,9 @@ async function fetchAuthUrlData() {
 fetchAuthUrlData()
 app.get('/', function (req, res) {
     try {
-        res.sendFile("./public/login.html", { root: __dirname })
+        //res.sendFile("./public/apitest.html", { root: __dirname })
+        res.sendFile("./public/twitterButton.html", { root: __dirname })// for discord
+
 
     } catch (e) {
         res.send(`Error: ${e}`)
@@ -58,10 +61,9 @@ app.get('/authorizationUrl', async (req, res) => {
         res.send(`Error:${e.message}`)
     }
 })
-
-// calback and redirect uri should be same
 app.get('/cb', async function (req, res) {
     try {
+        console.log('cb')
         const params = client.callbackParams(req)
         const tokenSet = await client.callback('http://localhost:5001/cb', params, { code_verifier })
         console.log(tokenSet, "received tokenSet")

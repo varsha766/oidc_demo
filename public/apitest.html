@@ -1,0 +1,266 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Example</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+        content="777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com">
+</head>
+
+<body>
+
+    <h1>Google Sign-In Example</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <script>
+        function onSignIn(googleUser) {
+            console.log('inside onSignIn');
+            var profile = googleUser.getBasicProfile();
+            console.log(profile, "==========================profile");
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            // Get the Google ID token
+            var idToken = googleUser.getAuthResponse().id_token;
+            console.log(idToken)
+            // Redirect to your backend with the token as a query parameter
+            window.location.href = 'http://localhost:3002/api/v1/login?token=' + idToken;
+        }
+    </script>
+
+</body>
+
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Example</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+        content="777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com">
+</head>
+
+<body>
+
+    <h1>Google Sign-In Example</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <script>
+        // Ensure the onSignIn function is defined globally
+        function onSignIn(googleUser) {
+            console.log('inside onSignIn');
+            var profile = googleUser.getBasicProfile();
+            console.log(profile, "==========================profile");
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            // Get the Google ID token
+            var idToken = googleUser.getAuthResponse().id_token;
+
+            // Redirect to your backend with the token as a query parameter
+            window.location.href = 'http://localhost:3002/api/v1/login?token=' + idToken;
+        }
+
+        // Initialize Google Sign-In
+        function init() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init({
+                    client_id: '777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com',
+                }).then(
+                    function (success) {
+                        console.log('Google Sign-In initialized successfully.');
+                    },
+                    function (error) {
+                        console.error('Error initializing Google Sign-In:', error);
+                    }
+                );
+            });
+        }
+
+        // Call the init function on window load
+        window.onload = init;
+    </script>
+
+</body>
+
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Example</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com">
+</head>
+<body>
+
+    <h1>Google Sign-In Example</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <script>
+        function onSignIn(googleUser) {
+            console.log('inside onSignIn');
+            var profile = googleUser.getBasicProfile();
+            console.log(profile, "==========================profile");
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            // Get the Google ID token
+            var idToken = googleUser.getAuthResponse().id_token;
+
+            // Redirect to your backend with the token as a query parameter
+            window.location.href = 'http://localhost:3002/api/v1/login?token=' + idToken;
+        }
+
+        // Initialize Google Sign-In
+        function init() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init({
+                    client_id: '777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com',
+                }).then(function() {
+                    console.log('Google Sign-In initialized successfully.');
+
+                    // Now, attach the onSignIn function to the button
+                    gapi.signin2.render('g-signin2', {
+                        'scope': 'profile email',
+                        'onsuccess': 'onSignIn'
+                    });
+                }).catch(function(error) {
+                    console.error('Error initializing Google Sign-In:', error);
+                });
+            });
+        }
+
+        // Call the init function on window load
+        window.onload = init;
+    </script>
+
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Example</title>
+    <script src="https://apis.google.com/js/platform.js" async defer onload="init"></script>
+    <meta name="google-signin-client_id"
+        content="777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com">
+</head>
+
+<body>
+
+    <h1>Google Sign-In Example</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <script>
+        // Initialize Google Sign-In
+        function init() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init({
+                    client_id: '777246753954-8bfp8l4d70c6hrpaj1pempmdt3a0rh5o.apps.googleusercontent.com',
+                });
+            });
+        }
+
+        // Function to be called on successful sign-in
+        function onSignIn(googleUser) {
+            console.log('inside onSignIn');
+            var profile = googleUser.getBasicProfile();
+            console.log(profile, "==========================profile");
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+
+            // Get the Google ID token
+            var idToken = googleUser.getAuthResponse().id_token;
+
+            // Redirect to your backend with the token as a query parameter
+            window.location.href = 'http://localhost:3002/api/v1/login?token=' + idToken;
+        }
+    </script>
+
+</body>
+
+</html> -->
+
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In</title>
+</head>
+
+<body>
+
+    <h1>Google Sign-In Example</h1>
+    <button onclick="initiateGoogleSignIn()">Sign In with Google</button>
+    <button onclick="logout()">logout</button>
+
+    <script>
+        async function initiateGoogleSignIn() {
+            // Redirect to the backend route that triggers Google Sign-In
+            //   window.location.href = 'http://localhost:3002/api/v1/login';
+            const response = await fetch('http://localhost:3002/api/v1/login', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "origin": "http://localhost:3002"
+                    // You may need to include additional headers, such as authorization headers if needed
+                },
+                // Add credentials: 'include' to include cookies in the request
+                credentials: 'include',
+            })
+            if (response.ok) {
+                const { authUrl } = await response.json()
+                console.log(authUrl)
+                window.location.href = authUrl
+
+            }
+        }
+
+        async function logout() {
+            const response = await fetch('http://localhost:3002/api/v1/logout', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    "origin": "http://localhost:3002"
+                },
+                body: ''
+            })
+            console.log(response)
+        }
+    </script>
+
+</body>
+
+</html>
