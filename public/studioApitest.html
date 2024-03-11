@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random API Caller with Authorization</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Add an input field to enter the authorization token -->
+    <label for="token">Authorization Token:</label>
+    <input type="text" id="token" placeholder="Enter your token">
+
+    <button onclick="fetchRandomData()">Fetch Random Data</button>
+    <div id="result"></div>
+
+    <script>
+        function fetchRandomData() {
+            // Replace 'YOUR_API_URL' with the actual API endpoint you want to call
+            // http://ent_56cef61.localhost:8080
+            const apiUrl = 'https://ent-c4e7c9d.api.entity.hypersign.id/api/v1/did?page=1&limit=10';
+            // const apiUrl = "https://ent-c4e7c9d.api.entity.hypersign.id/api/v1/did?page=1&limit=10"
+            // Get the authorization token from the input field
+            // const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6IjhmYTMyNDY3NmFhYzQzMjYwMDgzOGQ5Y2ExYWRkZGQ5ZjA5OSIsInVzZXJJZCI6IjU5YWU3NTM0LWE3YjItNDVhYS1hYmFkLTc4MDYwMTc0NjQwNCIsImdyYW50VHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsImttc0lkIjoiaHM6ZG9jOnJ5bTQyb2p1OXNsLWpqc3k4LXJ1c3Y4eXJ2Z3puZ3drcGl6OWhyY3ZrbGMiLCJ3aGl0ZWxpc3RlZENvcnMiOlsiaHR0cDovL2xvY2FsaG9zdDo1MDAxIiwiKiJdLCJzdWJkb21haW4iOiJlbnQtYzRlN2M5ZCIsImVkdklkIjoiaHM6ZGV2ZWxvcGVyLWRhc2hib2FyZDphcHA6OGZhMzI0Njc2YWFjNDMyNjAwODM4ZDljYTFhZGRkZDlmMDk5IiwiaWF0IjoxNzEwMTMxODc0LCJleHAiOjE3MTAxNDYyNzR9.mE94c3O-E4jyV2ALvzC1C9PAY2vVQZIdmcH4GBDJg08"//
+            const authToken = document.getElementById('token').value;
+            // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImRhYmQyYWY5YThiODljMzA5OTg5NWI0ZGVmMTVjMTBmYWYzNCIsImdyYW50VHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsImttc0lkIjoiaHM6ZG9jOmJzYzh5djR2cTN0aTdkenFpOTA2dXh0Y292a3kxenpqMXZ5LXp5bHdvbGciLCJ3aGl0ZWxpc3RlZENvcnMiOlsiaHR0cDovL2VudF81NmNlZjYxLmxvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDozMDAxIl0sInN1YmRvbWFpbiI6ImVudF81NmNlZjYxIiwiZWR2SWQiOiJoczpzdHVkaW8tYXBpOmFwcDpkYWJkMmFmOWE4Yjg5YzMwOTk4OTViNGRlZjE1YzEwZmFmMzQiLCJpYXQiOjE3MDIwNTQ5OTAsImV4cCI6MTgwMjA2OTM5MH0.gTT3vJqEMfSTX1HpxFljklUPzq3aqeEFid9QubtpZNA";
+
+            // Set up the Axios request with headers
+            axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    // "origin": "http://localhost:5001"
+                }
+            })
+                .then(response => {
+                    // Handle the response data as needed
+                    document.getElementById('result').innerText = JSON.stringify(response.data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>

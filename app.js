@@ -45,7 +45,10 @@ fetchAuthUrlData()
 app.get('/', function (req, res) {
     try {
         //res.sendFile("./public/apitest.html", { root: __dirname })
-        res.sendFile("./public/twitterButton.html", { root: __dirname })// for discord
+        // res.sendFile("./public/discordButton.html", { root: __dirname })// for discord
+        // res.sendFile("./public/github.html", { root: __dirname })
+        res.sendFile("./public/studioApitest.html", { root: __dirname })// for discord
+
 
 
     } catch (e) {
