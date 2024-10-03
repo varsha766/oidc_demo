@@ -77,7 +77,7 @@
             };
             const token = localStorage.getItem('authToken')
             // Send POST request
-            fetch("http://localhost:3009/api/client-register", {
+            fetch("http://localhost:3009/reg", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,7 +93,8 @@
                     }
                 })
                 .then(function (data) {
-                    var alertText = `clientId:${data.clientId}\n clientSecret:${data.clientSecret}\n ID: ${data.id}`
+                    console.log(data, "data")
+                    var alertText = `clientId:${data.client_id}\n clientSecret:${data.client_secret}\n`
                     alert(alertText)
                 })
                 .catch(function (error) {

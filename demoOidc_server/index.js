@@ -1,12 +1,11 @@
 import express from 'express'
-import oidc from 'oidc-provider'
+import oidc, { errors } from 'oidc-provider'
 import cors from 'cors'
 import { Router, urlencoded } from 'express'
 import { strict as assert } from 'node:assert';
 import clientService from './services/client.service.js'
 import accountService from './services/account.service.js'
 import configuration from './configuration.js'
-import { errors } from 'oidc-provider';
 import connectMongoDb from './db/connection.js'
 import path from 'path'
 import fs from 'fs'
@@ -42,14 +41,15 @@ const startServer = async () => {
                 if (!authToken) {
                     throw new Error('You are not authorized.')
                 }
-                const { userId, appName, appLogoUrl, redirect_uris, grant_types, scope } = req.body
-                if (!appName || !userId || !appLogoUrl || !redirect_uris) {
+                const { appName, appLogoUrl, redirect_uris, grant_types, scope } = req.body
+                if (!appName || !appLogoUrl || !redirect_uris) {
                     throw new Error('All the fields are required')
                 }
                 const clientId = generateRandomString(8)
                 const clientSecret = generateRandomString(32)
+                // const userDetail= await accountService.fetchByClientId({})
                 const userInfo = await clientService.set({
-                    userId, appName, appLogoUrl, redirect_uris, client_id: clientId, client_secret: clientSecret, grant_types, scope
+                    appName, appLogoUrl, redirect_uris, client_id: clientId, client_secret: clientSecret, grant_types, scope
                 })
                 res.json({ id: userInfo._id, clientId, clientSecret })
             } catch (e) {
@@ -78,8 +78,9 @@ const startServer = async () => {
                 console.log(e)
             }
         })
-        app.get('/interaction/:uid', async (req, res, next) => {
+        app.get('/interaction/:uid', setNoCache, async (req, res, next) => {
             try {
+                console.log('interaction')
                 const {
                     uid, prompt, params, session,
                 } = await provider.interactionDetails(req, res);
@@ -125,8 +126,9 @@ const startServer = async () => {
         })
         app.post('/interaction/:uid/login', setNoCache, body, async (req, res, next) => {
             try {
-
-                const { prompt: { name } } = await provider.interactionDetails(req, res);
+                const data = await provider.interactionDetails(req, res);
+                // console.log(data, "data")
+                const { prompt: { name }, params } = data
                 assert.equal(name, 'login');
                 let result;
                 const account = await accountService.get(req.body.username);
@@ -134,6 +136,7 @@ const startServer = async () => {
                     result = {
                         login: {
                             accountId: account.username,
+                            accountInfo: account
                         },
                     };
                 } else {
@@ -209,7 +212,13 @@ const startServer = async () => {
             }
         });
         configuration.clients = clientInfo
-        const provider = new oidc('http://localhost:3009', configuration)
+        // const adapter = new ClientAdapter()
+        configuration.renderError = (req, res, error) => {
+            // console.log(req)
+            console.log(error, "errro===========")
+            // const customErrorPage = fs.readFileSync('errorPage.html', 'utf-8')
+        }
+        const provider = new oidc('http://localhost:3009', { ...configuration })
         app.use((err, req, res, next) => {
             if (err instanceof SessionNotFound) {
                 // handle interaction expired / session not found error

@@ -1,6 +1,6 @@
 import Clients from '../db/model/client.js'
 const get = async (key) => {
-    const details = await Clients.findOne({ username: key })
+    const details = await Clients.findOne({ client_id: key })
     return details
 }
 const set = async (value) => {

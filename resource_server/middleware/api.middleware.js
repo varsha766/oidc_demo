@@ -15,7 +15,7 @@ export const authenticate = async (req, res, next) => {
             body: new URLSearchParams(body)
         })
         const json = await response.json()
-        console.log(json, "json")
+        // console.log(json, "json")
         const { active, aud } = json
         // need to check why not able to get aud in json
         // if (active && aud.trim() === req.originalUrl.split('?')[0]) {

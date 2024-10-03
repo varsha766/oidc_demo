@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "../../Hypermine/demoApiApp"
+	},
+	{
+		"path": "../../Hypermine/demoOidc_server"
+	},
+	{
+		"path": "."
+	}
+],
+  "settings": {}
+}

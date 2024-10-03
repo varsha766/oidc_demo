@@ -9,7 +9,6 @@ import fs from "fs"
 const __dirname = path.resolve()
 
 import session from 'express-session'
-import { error } from "console"
 
 env.config()
 const app = express()
@@ -71,6 +70,7 @@ app.get('/cb', Session, async (req, res, next) => {
             })
         })
         const accessToken = await token.json()
+        // console.log(accessToken, "=================")
         req.session.developerToken = accessToken.access_token
         res.sendFile("./public/console.html", { root: __dirname })
     } catch (e) {

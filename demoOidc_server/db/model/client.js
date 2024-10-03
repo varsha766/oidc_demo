@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 const ClientSchema = new Schema({
-    userId: { type: String, required: true },
+    userId: { type: String, required: false },
     appName: { type: String, required: true },
     appLogoUrl: { type: String, required: false },
     redirect_uris: { type: Array, dafault: false, required: false },

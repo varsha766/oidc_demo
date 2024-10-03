@@ -8,8 +8,8 @@
 <body>
     <h1>Client registration</h1>
     <form id="postForm">
-        <label for="userId">userId</label>
-        <input type="text" id="userId" name="userId" required><br>
+        <!-- <label for="userId">userId</label>
+                <input type="text" id="userId" name="userId" required><br> -->
 
         <label for="appName">App Name:</label>
         <input type="appName" id="appName" name="appName" required><br>
@@ -31,7 +31,7 @@
             event.preventDefault();
 
             // Get form values
-            var userId = document.getElementById("userId").value;
+            // var userId = document.getElementById("userId").value;
             var appName = document.getElementById("appName").value;
             var appLogoUrl = document.getElementById("appLogoUrl").value;
             var redirectUris = document.getElementById("redirect_uris").value;
@@ -40,7 +40,7 @@
 
             // Create data object
             var data = {
-                userId: userId,
+                // userId: userId,
                 appName: appName,
                 appLogoUrl: appLogoUrl,
                 redirect_uris: redirectUris.split(',').map(function (uri) {
